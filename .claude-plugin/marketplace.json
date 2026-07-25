@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "cpp-tools",
+  "owner": { "name": "Anton", "url": "https://github.com/sectapunterx" },
+  "plugins": [
+    {
+      "name": "cpp-mentor",
+      "source": "./",
+      "description": "A general, self-adapting C++ mentor: onboarding audit, LEAD/WRITE modes, per-project profile.",
+      "category": "development"
+    }
+  ]
+}

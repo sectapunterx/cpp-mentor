@@ -1,0 +1,5 @@
+# src/CMakeLists.txt — one add_executable per command-line front-end.
+# Each front-end is a thin driver over the header-only {{NS}}::{{PROJECT}} library.
+add_executable({{APP}} {{APP}}/main.cc)
+target_link_libraries({{APP}} PRIVATE {{NS}}::{{PROJECT}})
+target_compile_options({{APP}} PRIVATE -Wall -Wextra -Wpedantic)

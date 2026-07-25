@@ -1,0 +1,22 @@
+# Curated for modern C++20 under the Google style. Tune per project; every
+# disabled check below is disabled on purpose, not by accident — document the
+# rationale in the project's CONTRIBUTING or a style note when you change it.
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  cppcoreguidelines-*,
+  google-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -modernize-use-trailing-return-type,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay
+
+WarningsAsErrors: 'bugprone-*,clang-analyzer-*'
+HeaderFilterRegex: '.*'
+FormatStyle: file

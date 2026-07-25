@@ -1,0 +1,10 @@
+# Packaged skill bundle (rebuild with: cd skills && zip -r ../cpp-mentor.skill cpp-mentor)
+*.skill
+*.zip
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
