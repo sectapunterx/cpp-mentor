@@ -1,7 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "cpp-tools",
-  "owner": { "name": "Anton", "url": "https://github.com/sectapunterx" },
+  "owner": {
+    "name": "Anton",
+    "url": "https://github.com/sectapunterx"
+  },
+  "description": "C++ development tooling for Claude Code: a self-adapting mentor that onboards to your project, audits your level with questions generated per project, and either teaches from a roadmap or writes the code in your style.",
   "plugins": [
     {
       "name": "cpp-mentor",
