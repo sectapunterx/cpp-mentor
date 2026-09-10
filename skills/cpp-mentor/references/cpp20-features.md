@@ -11,7 +11,7 @@ clearer or removes a class of bug, not just because it exists.
 - **Ranges (`<ranges>`, `<algorithm>` range overloads)** — `std::ranges::sort`,
   views (`filter`, `transform`, `take`, `drop`). Compose pipelines instead of
   hand-rolled loops. Note: some range adaptors are lazy — materialize with a
-  loop or a helper (see `references/wrappers.md`, `ranges::to` is C++23).
+  loop or a helper (`std::ranges::to` is C++23, not available here).
 - **Concepts (`<concepts>`, `requires`)** — constrain templates. Turns cryptic
   template errors into readable diagnostics and documents intent at the API.
 - **`std::span`** — non-owning view over contiguous memory. Use for parameters
@@ -47,26 +47,26 @@ clearer or removes a class of bug, not just because it exists.
 ## Diagnostics
 
 - **`std::source_location`** — capture file/line/function without macros. Ideal
-  for custom assert/log wrappers (this one *is* C++20, no shim needed).
+  for custom assert and log helpers.
 
 ## Coroutines
 
 - **`co_await` / `co_yield` / `co_return`** — the language machinery is C++20,
-  but the standard library ships no ready-made types (generators, tasks).
-  Either write the promise types yourself or wrap them under `{{NS}}::` — see
-  `references/wrappers.md`.
+  but the standard library ships no ready-made types (generators, tasks), so
+  using them means writing the promise types by hand. Worth it for genuinely
+  callback-heavy or state-machine code; a large detour for anything else.
 
-## The C++20 / C++23 boundary (do NOT assume these exist)
+## The C++20 / C++23 boundary
 
-The project targets **strict C++20**. These are C++23 — provide a `{{NS}}::`
-wrapper instead of using them directly (see `references/wrappers.md`):
+If the project targets C++20, these do **not** exist — don't reach for them, and
+don't assume a compiler that accepts one is giving you C++20:
 
-- `std::expected` → use `{{NS}}::expected` (bundled component).
-- `std::print` / `std::println` → wrap `std::format` + stream/`fputs`.
-- `std::ranges::to` → small `{{NS}}::to_vector` / `{{NS}}::ranges_to` helper.
-- `std::flat_map` / `std::flat_set`, `std::mdspan`, `std::generator`,
-  `std::byteswap`, `std::stacktrace` → wrap only if actually needed.
+- `std::expected`, `std::print` / `std::println`, `std::ranges::to`
+- `std::flat_map` / `std::flat_set`, `std::mdspan`, `std::generator`
+- `std::byteswap`, `std::stacktrace`, `std::to_underlying`
+- `if consteval`, deducing `this`, multidimensional `operator[]`
 
-Rule of thumb: if a handy standard name turns out to be C++23+, do not silently
-drop the feature or downgrade the code — write a minimal `{{NS}}::` shim with the
-same interface so migration later is mechanical.
+Check what the build actually sets (`CMAKE_CXX_STANDARD`, or the `-std=` flag)
+before using anything from a newer standard, and say so plainly when a feature
+the developer suggested is out of reach on this project — with what the project
+does instead, which for error handling is whatever the profile records.

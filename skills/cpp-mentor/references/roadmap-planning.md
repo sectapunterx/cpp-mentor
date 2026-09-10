@@ -26,8 +26,9 @@ roadmap.
    profile.
 
 4. **Sequence foundation-first.** Order so early tasks unblock later ones:
-   project scaffolding and build first (layout, CMake, `app::expected`, one
-   trivial module + test that compiles), then the core data types, then
+   project scaffolding and build first (layout, CMake, one trivial module and a
+   test that compiles, whatever the error policy needs in place), then the core
+   data types, then
    features, then hardening (edge cases, more tests, docs). The developer should
    always have a green build to build on.
 
@@ -48,7 +49,7 @@ a first utility that reads latency numbers from stdin and prints percentiles."
 
 > **Milestone 1 — Project skeleton (foundation)**
 > - [ ] Repo layout + top-level CMake, `app::<project>` interface lib — builds empty.
-> - [ ] Drop in `app::expected`; a trivial `app::demo` header + passing test.
+> - [ ] A trivial `app::demo` header + passing test, to prove the loop works.
 > - [ ] CMakePresets (clang debug+san, gcc CI); `.clang-format` / `.clang-tidy`.
 >
 > **Milestone 2 — Core type**

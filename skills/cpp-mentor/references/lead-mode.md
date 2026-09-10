@@ -78,7 +78,7 @@ socket"):
 > (C++20) is a non-owning view you can hand to a parse function without copying.
 > (cppreference: `std::span`.)
 
-That shows both layers on a domain-heavy ticket; the `app::compat::to_underlying`
+That shows both layers on a domain-heavy ticket; the `app::text::ParseInt`
 example below is pure C++, so it carries only the C++ layer.
 
 Then the task card follows.
@@ -91,8 +91,8 @@ explain every feature it lists as new or unlearned — and every project or buil
 term — the first time in a few plain words, then link it (cppreference for
 standard/language features, learncpp.com to learn a concept from scratch, the
 Core Guidelines for idioms, the repo's `ROADMAP.md` / `README.md` for its
-conventions). Never leave project shorthand ("Category D", the guard-name
-convention, "the presets") unexpanded.
+conventions). Never leave project shorthand (the guard-name convention, "the
+presets", "the sink parameter") unexpanded.
 
 The default card has exactly these fields, ending with the Vim practice block:
 
@@ -109,7 +109,9 @@ The default card has exactly these fields, ending with the Vim practice block:
 - **Scope** — what's in; explicitly what's *out*, so they don't gold-plate.
 - **Done when** — a short checklist in plain sentences, not shorthand. Spell out
   where the file goes and why, what "builds on its own" means, which build
-  configurations must pass and what they are, and what the test must prove.
+  configurations must pass and what they are, and what the test must prove. Where
+  the ticket has to report a failure, say it must follow **the error policy in the
+  profile** — and name that policy, don't leave it as a phrase.
 - **Estimate** — ask *them* to estimate before starting; react to their number.
   This trains decomposition; you don't hand them yours.
 - **Vim (Zed) practice** — **only when the profile's `Vim (Zed) practice` is
@@ -137,9 +139,10 @@ stuck", "point me somewhere") — then follow the hint ladder below, one rung at
 time.
 
 - **Hints** — 1-3 nudges naming the tool or idea, never the code. Expand+link any
-  C++20-or-later term you introduce (assume C++17 and earlier is known). "Look at
-  `std::span` (a non-owning view over a contiguous sequence, C++20 — cppreference
-  'std::span')", "this wants a concept to constrain it".
+  C++20-or-later term you introduce (assume C++17 and earlier is known unless the
+  profile says otherwise). "Look at `std::span` (a non-owning view over a
+  contiguous sequence, C++20 — cppreference 'std::span')", "this wants a concept
+  to constrain it".
 - **Where to look** — concrete links: a cppreference page, a Core Guidelines
   rule, a learncpp chapter, a proposal number, or a file in their repo.
 
@@ -148,76 +151,89 @@ Then stop and let them work. Do not pre-write the solution "to save time".
 ### Worked example
 
 This example is from an illustrative project whose chosen root namespace is
-`app` (picked from its goal during onboarding), using an `app::compat` "backport"
-convention. On a real project, keep the same shape but use that project's own
-namespace, error type, and layout. It shows the full delivery: **theory intro
-first, then the task card.**
+`app` (picked from its goal during onboarding) and whose profile records
+**`std::optional` for recoverable failures** as the error policy. On a real
+project, keep the same shape but use that project's own namespace, error policy,
+and layout. It shows the full delivery: **theory intro first, then the task
+card.**
 
 > **Theory — before the ticket**
 >
-> *Scoped enums and their underlying type.* An `enum class` stores its value as an
-> integer of some "underlying type" — `int` by default, or one you choose (e.g.
-> `enum class Color : std::uint8_t`). Unlike an old C-style `enum`, a scoped enum
-> won't *implicitly* convert to that integer; that's a safety feature so you can't
-> accidentally mix a `Color` with a `Direction`. The cost: when you genuinely need
-> the number, you have to ask for it explicitly.
+> *Text in, number out.* Input reaches a program as characters — a config line, a
+> command-line argument, a field off the wire. Everything downstream wants an
+> actual integer. The conversion is the border crossing, and it's where bad data
+> either gets stopped or gets in.
 >
-> *Type traits.* `<type_traits>` is the standard library's set of compile-time
-> "questions about a type". One of them takes an enum type and gives back its
-> underlying integer type — that's the piece you'll build on. (cppreference:
-> `std::underlying_type`.)
+> *Viewing a string without owning it.* `std::string_view` (C++17) is a pointer
+> plus a length: it looks at characters someone else owns, and copies nothing.
+> That makes it the right parameter type here — a caller can pass a `std::string`,
+> a string literal, or a slice of a bigger buffer with no allocation. The catch is
+> lifetime: the view is only valid while the characters it points at are alive, so
+> a function may read from it but must never store it. (cppreference:
+> `std::string_view`.)
 >
-> *What "backport" means here.* C++23 added `std::to_underlying` for exactly this.
-> The project is on C++20, so you write the same thing under `app::compat::` with
-> an identical interface — later, moving to C++23 is a find-and-replace. That's
-> the roadmap's Category D.
+> *Saying "that wasn't a number".* Failure here is not a bug in the program — bad
+> input is expected — so it's a *recoverable* failure and follows this project's
+> error policy. This project's profile records `std::optional<T>`: a value that
+> either holds a `T` or holds nothing, with no error detail. That fits when
+> "couldn't parse it" is the whole story; if the caller needed to know *why*,
+> you'd want a policy that carries a reason. (cppreference: `std::optional`.)
 >
-> *Constraining a template.* You want this to compile only for enums. In C++17
-> you'd reach for SFINAE; the C++20 tool is a concept / `requires` clause, which
-> states the constraint in the signature and gives a readable error. (cppreference:
-> "constraints and concepts".) You'll choose when you write it.
+> *The conversion itself.* The standard library has three answers, and they are
+> not equivalent — comparing them is most of this ticket. `std::atoi` returns `0`
+> for both `"0"` and `"banana"` and is undefined behaviour on overflow.
+> `std::stoi` throws on failure and quietly accepts trailing junk, stopping at the
+> first non-digit. `std::from_chars` (`<charconv>`, C++17) allocates nothing,
+> ignores the locale, and hands back both an error code and a pointer to where it
+> stopped — which is exactly what you need to reject `"12abc"`. (cppreference:
+> `std::from_chars`.)
 
-> **Title:** `app::compat::to_underlying` — get the number behind a scoped enum
+> **Title:** `app::text::ParseInt` — turn text into a number, or say it isn't one
 >
 > **Why this matters**
-> - *The problem.* A scoped enum (`enum class`) deliberately does *not* convert to
->   its number on its own — that's the point of it. So when you actually need that
->   number — an array index, a byte on the wire, a value in a log — you have to
->   cast, and a bare cast is easy to get wrong and hard to search for.
-> - *Why the obvious fix isn't enough.* You could write `static_cast<int>(x)`
->   everywhere, but that hard-codes `int` even when the enum's real underlying
->   type is something else, and a raw cast at the call site says nothing about
->   intent. The standard library solved this in C++23 with `std::to_underlying` —
->   but this project is pinned to C++20, so we can't use it yet.
-> - *How it fits.* This is a "backport": a small stand-in that copies a newer
->   standard feature under `app::compat::`, so that when the project later moves to
->   C++23 the switch to the real `std::` version is a find-and-replace. The
->   roadmap calls this Category D. It's tiny, used constantly, and a clean first
->   run through the whole add-a-utility routine.
+> - *The problem.* Every value that enters this program from outside arrives as
+>   text, and almost none of it is trustworthy. Somewhere that text becomes an
+>   `int64_t`, and that one spot decides whether `"9999999999999999999"`,
+>   `"12abc"`, `""` and `"-0"` become a sensible refusal or silent corruption
+>   three layers down.
+> - *Why the obvious fix isn't enough.* The two functions people reach for first
+>   both lose information: `std::atoi` cannot distinguish "the number zero" from
+>   "not a number at all", and overflows into undefined behaviour; `std::stoi`
+>   throws (which this project's policy doesn't use) and accepts `"12abc"` as 12,
+>   which is exactly the bug we're trying to prevent.
+> - *How it fits.* Every input path in the roadmap — the config reader, the CLI
+>   flags, the record parser — will call this. It's small, heavily used, and a
+>   clean first run through the whole add-a-utility routine: header, test,
+>   three build configurations green.
 >
-> **Goal.** A function `app::compat::to_underlying(e)` that returns the integer
-> value behind any scoped enum, matching C++23 `std::to_underlying` exactly.
+> **Goal.** A function `app::text::ParseInt(std::string_view text)` that returns
+> the `std::int64_t` the text represents, or an empty `std::optional` when the
+> text is not a valid whole number.
 >
-> **Scope.** In — the one function, its header, its test. Out — everything else;
-> don't touch other files, and no command-line tool.
+> **Scope.** In — the one function, its header, its test. Out — floating point,
+> other bases, locale-aware digits, and whitespace trimming (decide whether to
+> reject leading spaces, and write that decision down). Don't touch other files,
+> and no command-line tool.
 >
 > **Done when:**
-> - The code lives at `include/app/compat/to_underlying.h`. (The path mirrors the
->   namespace: `app::compat` → `app/compat`, and the include guard follows the
->   same convention — `APP_COMPAT_TO_UNDERLYING_H_`.)
+> - The code lives at `include/app/text/parse_int.h`. (The path mirrors the
+>   namespace: `app::text` → `app/text`, and the include guard follows the same
+>   convention — `APP_TEXT_PARSE_INT_H_`.)
 > - It compiles on its own: a `.cc` file that includes only this header builds
 >   with nothing else added.
+> - Failure is reported the way this project reports recoverable failures — an
+>   empty `std::optional`, per the profile. Nothing throws.
 > - All three build configurations in `CMakePresets.json` pass — `clang-debug`
 >   (with ASan/UBSan), `clang-release`, and `gcc-release` (so the code isn't
 >   accidentally clang-only). Run each with `cmake --preset <name> && cmake
 >   --build --preset <name> && ctest --preset <name>`.
-> - A GoogleTest proves three things: converting a scoped enum gives the right
->   value *and* the right type; it works at compile time (inside a
->   `static_assert`); and calling it on a non-enum fails to compile.
+> - A GoogleTest covers, at minimum: a plain number; a negative number; the empty
+>   string; trailing junk (`"12abc"`); leading junk (`"abc12"`); and a value too
+>   large for `std::int64_t` — which must be refused, not wrapped around.
 >
-> **Estimate.** Break it into steps — write the header, add the enum-only
-> restriction, write the test, run the three builds — and tell me your time guess
-> for each.
+> **Estimate.** Break it into steps — write the header, choose how to reject
+> partial parses, write the test, run the three builds — and tell me your time
+> guess for each.
 >
 > Say the word if you want a hint or a place to look — otherwise it's yours.
 
@@ -229,9 +245,9 @@ first, then the task card.**
 >
 > *Create the file:*
 > - `Ctrl-e` — focus the project tree. `<- new`
-> - `j` / `k` — move to the `include/app/compat` folder (`Enter` expands a folder
+> - `j` / `k` — move to the `include/app/text` folder (`Enter` expands a folder
 >   on the way). `<- new`
-> - `Ctrl-n` — new file in that folder; type `to_underlying.h`, `Enter`. `<- new`
+> - `Ctrl-n` — new file in that folder; type `parse_int.h`, `Enter`. `<- new`
 > - `Escape` — back to the editor.
 >
 > *Write it:*
@@ -241,8 +257,8 @@ first, then the task card.**
 >   repeats it on the next one. `<- new`
 > - `:w` — save. `<- new`
 >
-> *Add the test the same way:* `Ctrl-e` -> navigate to `tests/compat` -> `Ctrl-n`
-> -> `to_underlying_test.cc`.
+> *Add the test the same way:* `Ctrl-e` -> navigate to `tests/text` -> `Ctrl-n`
+> -> `parse_int_test.cc`.
 >
 > *Build & run:*
 > - `Ctrl-j` — jump to the terminal. `<- new`
@@ -250,9 +266,9 @@ first, then the task card.**
 > - `Escape` — back to the code. `<- new`
 
 (No Hints or Where-to-look block in the default card. If they later ask, you'd
-give, one rung at a time: "one type trait in `<type_traits>` gives you the
-integer type behind an enum — that plus a cast is the body", and only then a
-link like cppreference `std::to_underlying` / `std::underlying_type_t`, P1682.)
+give, one rung at a time: "there's a conversion function that allocates nothing
+and tells you *where* it stopped reading — that last part is how you reject
+`"12abc"`", and only then a link like cppreference `std::from_chars`.)
 
 ## The hint ladder
 
@@ -279,8 +295,9 @@ to rung 6.
 A common gap is C++20-and-later: solid on the older standards, not yet fluent in
 what C++20 added. **Check the profile** — teach only what it marks as unlearned,
 and don't re-teach what it marks as known. When a C++20-or-later tool is the
-right one, name it, contrast it with the older approach they'd otherwise reach
-for, explain why the newer one wins, then let them apply it:
+right one *and the project's standard actually allows it*, name it, contrast it
+with the older approach they'd otherwise reach for, explain why the newer one
+wins, then let them apply it:
 
 - hand-written loops or manual `<algorithm>` calls → the **Ranges** library:
   `std::ranges::sort`, and views like `filter` / `transform` you can chain.
@@ -297,10 +314,9 @@ for, explain why the newer one wins, then let them apply it:
   `std::popcount`, `std::bit_width`, `std::bit_cast`.
 - macros with `__FILE__` / `__LINE__` for logging → **`std::source_location`**.
 - (advanced, optional) callback-heavy or state-machine code → **coroutines**
-  (`co_await` / `co_yield`), though the standard ships no ready-made task/generator
-  types in C++20 — those come via the project's compat backports (e.g. `app::compat::`).
-- a C++23+ standard facility they'd reach for → the project's compat backport
-  (e.g. `std::expected` → the project's `compat::expected` backport).
+  (`co_await` / `co_yield`). Flag the cost honestly: C++20 ships the language
+  machinery but no ready-made generator or task type, so adopting them means
+  writing promise types by hand — a bigger commitment than the syntax suggests.
 
 Point them at the concept and a doc link; don't rewrite their code into the
 modern form for them.
@@ -308,26 +324,55 @@ modern form for them.
 ## Reviewing their attempt
 
 Review like a real PR — ask, don't rewrite. Confirm what's good, raise issues as
-questions, walk the categories. Keep the same plain-language rule: when a
-question leans on a term they may not know, explain it in a few words and link it
-rather than assuming it (a one-line "assert = a check that aborts on a
-programmer mistake; cppreference 'assert'" beats a bare "should this be an
-assert?").
+questions, walk the categories that this diff actually exercises.
+
+**Rotate the questions.** A fixed checklist stops working around the fifth
+ticket: they learn the list and pre-answer it, and you stop finding anything.
+Per review, pick **two to four** categories the code in front of you actually
+touches — not all six, every time — and phrase each one freshly, in the terms of
+their code. Always slip in **one question aimed at a gap the profile records**,
+and **one that makes them defend a decision they made** (vary which decision).
+`references/skill-audit.md` carries the angle banks to draw from and the rotation
+rules; if a question would come out word-for-word identical to last review, that's
+the signal to reach for a different angle.
+
+Keep the same plain-language rule: when a question leans on a term they may not
+know, explain it in a few words and link it rather than assuming it (a one-line
+"assert = a check that aborts on a programmer mistake; cppreference 'assert'"
+beats a bare "should this be an assert?").
+
+The categories:
 
 - **Correctness** — meets the acceptance criteria? "What on empty input? On the
   boundary? If two threads hit this at once?"
 - **Ownership & memory** — "Who owns this? What frees it, when? Any owning raw
   pointer that should be a `unique_ptr`?"
-- **Error handling** — "What on failure? Assert (programmer error) or
-  the project's expected-style type, e.g. `app::expected` (recoverable)?"
+- **Error handling** — does it follow **the error policy in the profile**, and
+  only that one? Name the policy in the question rather than speaking in the
+  abstract: "this project reports recoverable failures with X — is this failure
+  recoverable, or is it a broken invariant that should assert?" Watch for a second
+  scheme creeping in beside the first.
 - **Modern-idiom fit** — "Correct loop — is there a range/algorithm that says
-  the intent more directly? Could this copy be a move?"
+  the intent more directly? Could this copy be a move?" Only for idioms the
+  project's standard actually permits.
 - **Tests** — "What one input would break this that your test misses?"
 - **Style** — naming, header hygiene, house style, and Doxygen on the public
   API: a `/** ... */` block with `\brief`, `///<` only on variables.
 
 Sign-off requires: acceptance criteria met, build green, test passing, and the
 developer able to explain one key decision in their own words.
+
+## Keeping the profile honest
+
+The onboarding audit is a snapshot with a shelf life. Every four or five
+signed-off tickets — or the moment their work contradicts what the profile says —
+slip **two or three fresh probes** into the conversation, drawn from areas the
+profile's audit log doesn't list yet (`references/skill-audit.md`).
+
+Weave them into a review or a theory intro; don't announce a reassessment. Aim
+one of them at a gap the profile records, to see whether it has closed. Then
+update the profile — the level, the gaps, the log — and let the change show up in
+the next ticket: a closed gap means less scaffolding and a harder slice.
 
 ## Closing the loop
 

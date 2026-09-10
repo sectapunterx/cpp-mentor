@@ -34,8 +34,7 @@ Release build: swap `clang-debug` for `clang-release`. CI parity on GCC:
 
 - Strict C++20, Google C++ Style, Doxygen comments: `/** ... */` blocks with
   `\`-style tags and a mandatory `\brief`; `///<` trailing only on variables.
-- Recoverable errors return `{{NS}}::expected`; invariants use `assert`; no
-  exceptions on hot paths.
+- Recoverable errors are reported by {{ERROR_POLICY}}; invariants use `assert`.
 - Only `std::unique_ptr` / `std::shared_ptr` for ownership; no owning raw
   pointers.
 

@@ -21,14 +21,34 @@ Establish, from the repo (`README`, existing code) or by asking:
 - **Goal** — what the project is for; what "v1" does. State it back in one line.
 - **Domain / topic** — the subject area the code lives in (networking, parsing,
   graphics, audio, embedded, databases, games, ...). This drives the *domain
-  theory* in every ticket intro, so name it explicitly.
+  theory* in every ticket intro and the domain half of the audit, so name it
+  explicitly.
 
 ## 2. Conventions
 
 Read them from the repo when present (`.clang-format`, `.clang-tidy`, `README` /
 `CONTRIBUTING`, license, `CMakeLists.txt`, existing headers); otherwise propose
-the house defaults from `SKILL.md` and confirm. Settle: C++ standard, style,
-error policy, layout, license + author, build system, test framework.
+the house defaults from `SKILL.md` and confirm.
+
+Settle and record: **C++ standard**, **style**, **error policy**, **layout**,
+**license + author**, **build system**, **test framework**.
+
+**The error policy is a real question, not a default.** Projects differ, and this
+skill imposes nothing. Read it from the code if the code already says (does
+anything `throw`? do functions return status codes, `std::optional`, a result
+type?), and otherwise ask which of these the project uses for a *recoverable*
+failure:
+
+- exceptions (mainstream C++, and what most third-party libraries assume);
+- error codes / `std::error_code` / an enum return;
+- `std::optional` where "absent" is the whole story;
+- `std::expected` (C++23) or the project's own result type;
+- a mix, split by layer — hot paths one way, the outer API another.
+
+Whatever comes back goes in the profile and wins from then on, in both modes.
+Separately, note that `assert` covers *invariants* — programmer bugs, not runtime
+failures — under every one of those policies. Don't argue for a scheme the
+project doesn't use.
 
 ## 3. Namespace (from the goal)
 
@@ -42,45 +62,26 @@ There is no baked-in namespace. Derive it from the project:
   fitting one at that point, don't pre-invent them all now.
 - Record the chosen root; it fills the `{{NS}}` token in the templates.
 
-## 4. Audit the developer (two short checks)
+## 4. Audit the developer — two short checks
 
-Calibrate how much theory and scaffolding to give. Frame it honestly: it's
-calibration, not a test with a grade; "don't know / haven't used" is a useful
-answer; answer in your own words without looking things up; write nothing to the
-profile until both checks are done, then report plainly.
+Calibrate how much theory and scaffolding to give: one check on **C++**, one on
+the **project's domain**, scored separately (someone can be strong in C++ and new
+to the domain, or the reverse).
 
-### 4a. C++ skill-check (~6-8 questions, easy → C++20)
+**The questions are generated fresh for this project — follow
+`references/skill-audit.md`.** It carries the bank of areas and angles, the
+selection rule that makes each project's audit different, the format catalogue,
+the domain recipe, and the rounds-and-adapt loop. Do not invent your own fixed
+list and do not reuse an audit you've given before: a memorised answer tells you
+nothing about this developer.
 
-Pick a spread so the answers reveal the real level. A reusable set:
-1. `unique_ptr` vs `shared_ptr`, and what's wrong with "`shared_ptr` everywhere".
-2. What `std::move` actually does; the state of the moved-from object.
-3. The bug in a function that returns a `string_view` to a local `std::string`.
-4. A class holding a raw resource handle: which special members matter, and what
-   breaks if you skip them (Rule of Three/Five, double-free).
-5. `const int*` vs `int* const` vs a `const` member function.
-6. How to signal a recoverable error, and what the choice depends on.
-7. data race vs race condition; which tool detects a data race.
-8. One line each (or "not used"): `concepts`, `ranges`, `std::span`, `<=>`.
+In short: roll the selection, land on 5-7 C++ areas and 4-6 domain questions, ask
+in rounds of three, adapt to what comes back, and write nothing to the profile
+until both checks are done. Then report plainly — solid on, shaky on, hasn't met
+— and record the **specific gaps and misconceptions**, which matter far more than
+any level label, because they're what ticket theory will target.
 
-Calibrate a **C++ level** plus the **specific gaps/misconceptions** to watch (the
-gaps matter more than the label — record them so ticket theory targets them).
-
-### 4b. Domain skill-check (~4-6 questions, composed from the goal)
-
-Generate these from the project's domain — they are not fixed. Aim at the
-fundamentals the project will lean on. Examples:
-- *TCP messenger:* Is TCP message- or stream-oriented? What does "framing" solve?
-  Difference between a message and a TCP segment? What is backpressure? What can
-  a half-open connection do to a naive read loop?
-- *Parser:* tokens vs grammar? What is an AST? recursive-descent vs a parser
-  generator — when each?
-- *Ray tracer:* what is a ray? ray-sphere intersection at a high level? why is a
-  bounding-volume hierarchy worth it?
-
-Calibrate a **domain level** separately from the C++ level (someone can be strong
-in C++ and new to the domain, or the reverse).
-
-## 4c. Vim (Zed) practice — ask (default OFF)
+## 5. Vim (Zed) practice — ask (default OFF)
 
 Ask once, plainly: *"Want Vim (Zed) shortcuts included with each ticket, so you
 learn Vim as you go?"* Default is **off**. If yes, each LEAD card ends with a
@@ -90,17 +91,21 @@ profile; the developer can toggle it anytime ("turn vim on/off"). The guide
 targets **Zed's** vim mode — for a different editor, the pure-Vim motions still
 apply but panel/file keys differ; note the editor in the profile.
 
-## 5. Write the profile
+## 6. Write the profile
 
 Fill `templates/project-profile.md` and save it: goal, domain, root namespace,
-conventions, C++ level + gaps, domain level + gaps, notes. In Claude Code, write
-the file into the repo (and it will be read next session); in the chat app, show
-the filled profile for the developer to save, and store the level calibration in
-memory if available.
+conventions (including the settled error policy), C++ level + gaps, domain level
++ gaps, Vim preference, and the **audit log entry** — date, which areas and
+angles you used, which formats — so the next audit can avoid them.
 
-## 6. Then work to the profile
+In Claude Code, write the file into the repo (and it will be read next session);
+in the chat app, show the filled profile for the developer to save, and store the
+level calibration in memory if available.
+
+## 7. Then work to the profile
 
 From here, every ticket's theory depth, task difficulty, hints, and reviews are
 calibrated to *this* profile: weaker C++ area → more C++ theory and smaller
-slices; weaker domain → more domain theory; strong in both → push harder. Revisit
-the profile when the developer clearly levels up or the project pivots.
+slices; weaker domain → more domain theory; strong in both → push harder. The
+picture isn't frozen — LEAD mode re-checks it with fresh probes every few tickets
+(`skill-audit.md`), and the profile gets updated when it moves.

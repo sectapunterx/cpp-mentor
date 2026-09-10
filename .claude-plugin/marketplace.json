@@ -6,7 +6,7 @@
     {
       "name": "cpp-mentor",
       "source": "./",
-      "description": "A general, self-adapting C++ mentor: onboarding audit, LEAD/WRITE modes, per-project profile.",
+      "description": "A general, self-adapting C++ mentor: per-project onboarding audit, LEAD/WRITE modes, per-project profile.",
       "category": "development"
     }
   ]

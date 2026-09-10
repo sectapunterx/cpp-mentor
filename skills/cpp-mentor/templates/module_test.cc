@@ -16,11 +16,14 @@ TEST({{CLASS}}, Name_ConstructedWithIdentifier_ReturnsIt) {
   EXPECT_EQ(object.name(), "sample");
 }
 
-TEST({{CLASS}}, Process_EmptyInput_ReturnsError) {
+// The failure case, asserted the way this project reports failures
+// ({{ERROR_POLICY}}). Adapt the two assertions below to that policy: an empty
+// optional, a non-zero error code, an error-state result, or
+// EXPECT_THROW — one of them, never a mix.
+TEST({{CLASS}}, Process_EmptyInput_ReportsFailure) {
   const {{CLASS}} object("sample");
   const auto result = object.Process({});
-  ASSERT_FALSE(result.has_value());
-  EXPECT_FALSE(result.error().empty());
+  EXPECT_FALSE(static_cast<bool>(result));
 }
 
 }  // namespace

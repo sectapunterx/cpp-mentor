@@ -18,10 +18,11 @@
 Header guards: `{{NS_UPPER}}_<PATH>_<FILE>_H_`, e.g. `{{NS_UPPER}}_LATENCY_HISTOGRAM_H_`.
 Close namespaces with a comment: `}  // namespace {{NS}}::latency`.
 
-**Deliberate exception:** vocabulary types that shadow a standard type
-(`{{NS}}::expected`, `{{NS}}::unexpected`, `{{NS}}::print`) mirror the *standard's*
-lowercase, std-style naming so they stay drop-in replaceable. This is the only
-place lowercase type/member names are correct. See `references/wrappers.md`.
+**Deliberate exception:** a type deliberately built to stand in for a standard
+one — so that call sites can later switch to the standard name unchanged —
+mirrors the *standard's* lowercase, std-style naming instead of Google's. That is
+the only place lowercase type and member names are correct; document the
+deviation in the header.
 
 ## Includes
 

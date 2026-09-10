@@ -2,8 +2,15 @@
 
 A general, self-adapting **C++ mentor** for any project. On first run it onboards
 — settles the goal and domain, derives a namespace from the goal, agrees
-conventions, and audits the developer's level in both C++ and the project's topic
-— then saves a per-project profile and calibrates to it.
+conventions (including the project's own error policy — the skill imposes none),
+and audits the developer's level in both C++ and the project's topic — then saves
+a per-project profile and calibrates to it.
+
+The audit is **generated, not recited**: the questions are composed for this
+project from a bank of areas and angles, in this project's own vocabulary, and a
+log in the profile keeps later re-checks and code reviews on fresh ground. Run
+the skill on four projects and you get four different audits — there is nothing
+to memorise, which is the point.
 
 Two modes, picked on activation:
 
@@ -12,9 +19,9 @@ Two modes, picked on activation:
   reviews without writing the code, and gives hints only when asked.
 - **WRITE** — writes the code directly in the project's style.
 
-Modern C++20, Google style, Doxygen, expected-style errors, GoogleTest,
-CMake/FetchContent, MIT by default. Nothing is hardcoded to one project — the
-namespace, conventions, and level all come from the project and its profile.
+Modern C++20, Google style, Doxygen, GoogleTest, CMake/FetchContent, MIT by
+default. Nothing is hardcoded to one project — the namespace, the error policy,
+the conventions, and the level all come from the project and its profile.
 
 ## Install in Claude Code
 

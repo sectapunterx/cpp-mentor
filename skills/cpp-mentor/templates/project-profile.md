@@ -2,7 +2,8 @@
 
 Written once during onboarding, read at the start of every session so the skill
 stays individual to this project and this developer. Keep it in the repo root or
-`.claude/`. Update it when the project pivots or the developer levels up.
+`.claude/`. Update it when the project pivots, when the developer levels up, and
+after every re-check.
 
 ## Project
 
@@ -13,9 +14,12 @@ stays individual to this project and this developer. Keep it in the repo root or
 
 ## Conventions
 
-- **C++ standard:** <e.g. C++20>
+- **C++ standard:** <e.g. C++20 — what the build actually sets>
 - **Style:** <e.g. Google C++ Style, per .clang-format>
-- **Errors:** <e.g. assert + an expected-style type, no throw on hot paths>
+- **Error policy:** <the one scheme this project uses for recoverable failures:
+  exceptions / error codes / std::optional / std::expected / own result type.
+  Fills `{{ERROR_POLICY}}` in prose and `{{RESULT_TYPE}}` in code. `assert`
+  covers invariants under any of them. Never introduce a second scheme.>
 - **Layout / build / tests:** <e.g. include/<ns>/…, CMake+FetchContent, GoogleTest>
 - **License + author:** <e.g. MIT, Name (handle)>
 
@@ -27,6 +31,15 @@ stays individual to this project and this developer. Keep it in the repo root or
 - **Domain level:** <separate from C++: new / some / strong in this topic>
   - Solid on: <…>
   - Gaps / watch: <…>
+
+## Audit log
+
+What has already been asked, so the next audit and the next review ask something
+else (see `references/skill-audit.md`). Append, never overwrite.
+
+- <date> — onboarding audit — C++ areas: <numbers/names> — formats: <…> —
+  domain axes: <…> — outcome: <one line>
+- <date> — re-check after <n> tickets — areas: <…> — outcome: <what moved>
 
 ## How to work here
 

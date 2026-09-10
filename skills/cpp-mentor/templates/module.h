@@ -6,8 +6,6 @@
 #include <string>
 #include <string_view>
 
-#include "{{NS}}/expected.h"
-
 /**
  * \file
  * \brief One-line summary of what this module provides.
@@ -34,12 +32,15 @@ class {{CLASS}} {
   [[nodiscard]] std::string_view name() const noexcept { return name_; }
 
   /**
-   * \brief Example of the error policy: recoverable failures return an
-   *        \ref {{NS}}::expected, invariants use assert, nothing throws.
-   * \param values Non-owning view over the input samples.
-   * \return The computed result, or an error describing why it failed.
+   * \brief Example of the project's error policy in use: {{ERROR_POLICY}}.
+   *
+   * Recoverable failures are reported through {{RESULT_TYPE}}; a violated
+   * precondition is a programmer bug and asserts instead.
+   *
+   * \param values Non-owning view over the input samples; must not be empty.
+   * \return The computed result, or the failure reported per the policy above.
    */
-  [[nodiscard]] {{NS}}::expected<std::int64_t, std::string> Process(
+  [[nodiscard]] {{RESULT_TYPE}} Process(
       std::span<const std::int64_t> values) const;
 
  private:

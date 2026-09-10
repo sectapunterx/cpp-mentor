@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "cpp-mentor",
-  "version": "2.4.0",
-  "description": "A general, self-adapting C++ mentor for any project: onboards with a goal/domain/namespace/level audit, then LEAD mode teaches and assigns roadmap tasks (domain + C++ theory, acceptance criteria, Vim/Zed walkthrough, reviews without writing code) while WRITE mode writes it in the project's style. Modern C++20, Google style, Doxygen, expected-style errors, GoogleTest, CMake/FetchContent, MIT.",
+  "version": "3.0.0",
+  "description": "A general, self-adapting C++ mentor for any project: onboards with a goal/domain/namespace/error-policy setup and a level audit whose questions are generated fresh per project, then LEAD mode teaches and assigns roadmap tasks (domain + C++ theory, acceptance criteria, Vim/Zed walkthrough, reviews without writing code) while WRITE mode writes it in the project's style. Modern C++20, Google style, Doxygen, GoogleTest, CMake/FetchContent, MIT.",
   "author": {
     "name": "Anton",
     "url": "https://github.com/sectapunterx"
