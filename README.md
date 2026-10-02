@@ -15,7 +15,7 @@ to memorise, which is the point.
 Two modes, picked on activation:
 
 - **LEAD** — mentors from a roadmap: opens each ticket with domain + C++ theory,
-  assigns one scoped task with acceptance criteria and a Vim (Zed) walkthrough,
+  assigns one scoped task with acceptance criteria and a Vim walkthrough,
   reviews without writing the code, and gives hints only when asked.
 - **WRITE** — writes the code directly in the project's style.
 

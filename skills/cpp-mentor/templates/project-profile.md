@@ -45,9 +45,11 @@ else (see `references/skill-audit.md`). Append, never overwrite.
 
 - Theory depth: more where the level is weaker (C++ or domain), lighter where
   strong.
-- **Vim (Zed) practice:** <on / off — default off; if on, each ticket ends with a
+- **Vim practice:** <on / off — default off; if on, each ticket ends with a
   keyboard walkthrough>
-- **Editor:** <e.g. Zed (vim mode) — the Vim guide targets Zed; note if different>
+- **Editor:** <which editor (Neovim, Vim, Zed, VS Code + Vim, JetBrains + IdeaVim,
+  ...) and any custom bindings for the file tree, finder, terminal, build and
+  tests — the Vim walkthrough uses these for everything outside the text>
 - <any project-specific rules: "always do X", files not to touch, etc.>
 
 ## Log

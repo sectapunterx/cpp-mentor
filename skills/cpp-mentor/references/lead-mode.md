@@ -114,20 +114,22 @@ The default card has exactly these fields, ending with the Vim practice block:
   profile** — and name that policy, don't leave it as a phrase.
 - **Estimate** — ask *them* to estimate before starting; react to their number.
   This trains decomposition; you don't hand them yours.
-- **Vim (Zed) practice** — **only when the profile's `Vim (Zed) practice` is
-  `on`** (it's off by default; ask once and store it — see `onboarding.md`). When
-  on, it's the **last item on every card** and **comprehensive**: walk the whole
-  keyboard workflow *this* ticket needs, in order — focus the panel and
-  create/open the files, navigate to the right folder, edit, save, run the tests —
-  listing *every* shortcut used, including ones they know, but marking the new
-  ones ("<- new"). Use their custom panel keys (`Ctrl-e` tree, `Ctrl-j` terminal,
-  `Escape` back). Group by phase; one line each; mark Zed keys. Draw from and stay
-  accurate to `references/vim-zed.md`. When the toggle is `off`, omit this block
-  entirely.
+- **Vim practice** — **only when the profile's `Vim practice` is `on`** (it's
+  off by default; ask once and store it — see `onboarding.md`; an older profile's
+  `Vim (Zed) practice` is the same toggle). When on, it's the **last item on
+  every card** and **comprehensive**: walk the whole keyboard workflow *this*
+  ticket needs, in order — create/open the files, navigate to the right folder,
+  edit, save, build, run the tests — listing *every* shortcut used, including
+  ones they know, but marking the new ones ("<- new"). Core Vim keys work in any
+  editor; for the file tree, finder, terminal, build and tests use the keys
+  recorded on the profile's **Editor** line (their custom bindings first, else
+  that editor's defaults, marked as editor-specific). Group by phase; one line
+  each. Draw from and stay accurate to `references/vim.md`. When the toggle is
+  `off`, omit this block entirely.
 
 After the estimate, add one short line offering pointers on request (e.g. "Say
 the word if you want a hint or where to look"). Then, **only if the profile's Vim
-practice is `on`**, add the **Vim (Zed) practice** block as the very last thing;
+practice is `on`**, add the **Vim practice** block as the very last thing;
 otherwise end after the pointers line. Then stop.
 
 ### Held back until asked — Hints and Where to look
@@ -240,30 +242,27 @@ card.**
 (The block below appears only because this example project has Vim practice turned
 `on`. With it `off`, the card ends at the line above.)
 
-> **Vim (Zed) practice** — the whole ticket from the keyboard (`<- new` = new
-> for you):
+> **Vim practice** — the whole ticket from the keyboard (`<- new` = new for
+> you). This example's profile records VS Code with the Vim extension and no
+> custom bindings, so editor keys are VS Code defaults:
 >
 > *Create the file:*
-> - `Ctrl-e` — focus the project tree. `<- new`
-> - `j` / `k` — move to the `include/app/text` folder (`Enter` expands a folder
->   on the way). `<- new`
-> - `Ctrl-n` — new file in that folder; type `parse_int.h`, `Enter`. `<- new`
-> - `Escape` — back to the editor.
+> - `:e include/app/text/parse_int.h` — open a new buffer at that path. `<- new`
+> - `:w` — save; this creates the file. `<- new`
 >
 > *Write it:*
 > - `i` / `o` — insert / open a line (you know these); `A` — jump to end of line to
 >   append. `<- new`
 > - `ciw` — change the word under the cursor (renaming a type or param); then `.`
 >   repeats it on the next one. `<- new`
-> - `:w` — save. `<- new`
+> - `:w` — save.
 >
-> *Add the test the same way:* `Ctrl-e` -> navigate to `tests/text` -> `Ctrl-n`
-> -> `parse_int_test.cc`.
+> *Add the test the same way:* `:e tests/text/parse_int_test.cc`, then `:w`.
 >
 > *Build & run:*
-> - `Ctrl-j` — jump to the terminal. `<- new`
+> - `` Ctrl-` `` — open the terminal (VS Code). `<- new`
 > - run `cmake --build --preset clang-debug && ctest --preset clang-debug`.
-> - `Escape` — back to the code. `<- new`
+> - `` Ctrl-` `` again — back to the code (VS Code). `<- new`
 
 (No Hints or Where-to-look block in the default card. If they later ask, you'd
 give, one rung at a time: "there's a conversion function that allocates nothing

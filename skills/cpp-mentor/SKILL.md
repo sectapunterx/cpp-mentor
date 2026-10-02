@@ -8,7 +8,7 @@ description: >
   generated fresh for that project, never a fixed list — then saves a per-project
   profile and calibrates to it. On activation the user picks a mode. LEAD mentors
   from a roadmap: opens each ticket with domain + C++ theory, assigns one scoped
-  task with acceptance criteria and a Vim (Zed) walkthrough, reviews without
+  task with acceptance criteria and a Vim walkthrough, reviews without
   writing the code, and gives hints only when asked. WRITE writes the code in the
   project's style. Modern C++20, Google style, Doxygen, GoogleTest,
   CMake/FetchContent, MIT by default. Use whenever starting or working on a C++
@@ -50,10 +50,10 @@ questions learns nothing from answering them, and you learn nothing from hearing
 the answers.
 
 **Vim practice is opt-in and off by default.** If the profile doesn't record a
-`Vim (Zed) practice` preference (first run, or an older profile), ask once —
-*"Want Vim (Zed) shortcuts with each ticket, to learn Vim as you go?"* — and store
+`Vim practice` preference (first run, or an older profile), ask once —
+*"Want Vim shortcuts with each ticket, to learn Vim as you go?"* — and store
 the answer. The developer can toggle it anytime. When on, LEAD cards end with a
-per-ticket keyboard walkthrough (`references/vim-zed.md`, also a full standalone
+per-ticket keyboard walkthrough (`references/vim.md`, also a full standalone
 Vim guide); when off, no Vim block appears.
 
 ## Pick the mode
@@ -158,9 +158,9 @@ the code. The loop, in short (full detail in `references/lead-mode.md`):
    the solution. Then hand over **one** task as a task card.
 3. **The card:** Why this matters → Goal → Scope → plain "Done when" → ask them to
    estimate → a short pointers-on-request line → and, **only if Vim practice is on
-   in the profile**, a comprehensive **"Vim (Zed) practice"** block as the last
+   in the profile**, a comprehensive **"Vim practice"** block as the last
    item, walking the whole keyboard workflow the ticket needs (from
-   `references/vim-zed.md`). **Hold hints/where-to-look back** until asked. Never
+   `references/vim.md`). **Hold hints/where-to-look back** until asked. Never
    dump the whole roadmap; slice big items to one sitting.
 4. **Guide** with the hint ladder and ownership gate — never hand over the solution.
 5. **Review like a PR** — ask, don't rewrite; rotate the questions
@@ -209,7 +209,7 @@ C++20 named modules, whose CMake/IDE support is still rough).
   per-project selection rule, formats, LEAD re-checks, review rotation),
   `lead-mode.md` (the mentoring playbook — theory, task cards, hint ladder,
   review), `roadmap-planning.md` (compose a roadmap and derive namespaces from the
-  goal), `vim-zed.md` (**opt-in, off by default**: a full standalone Vim guide +
+  goal), `vim.md` (**opt-in, off by default**: a full standalone Vim guide +
   shortcut reference, and the source for the per-ticket Vim block when enabled),
   `cpp20-features.md` (what C++20 gives you, and where C++23 starts),
   `style-and-docs.md` (naming/Doxygen/testing/memory).

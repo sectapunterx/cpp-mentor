@@ -81,15 +81,20 @@ until both checks are done. Then report plainly — solid on, shaky on, hasn't m
 — and record the **specific gaps and misconceptions**, which matter far more than
 any level label, because they're what ticket theory will target.
 
-## 5. Vim (Zed) practice — ask (default OFF)
+## 5. Vim practice — ask (default OFF)
 
-Ask once, plainly: *"Want Vim (Zed) shortcuts included with each ticket, so you
-learn Vim as you go?"* Default is **off**. If yes, each LEAD card ends with a
-comprehensive per-ticket keyboard walkthrough (`references/vim-zed.md`, which is
-also a full standalone Vim guide). Record `Vim (Zed) practice: on` or `off` in the
-profile; the developer can toggle it anytime ("turn vim on/off"). The guide
-targets **Zed's** vim mode — for a different editor, the pure-Vim motions still
-apply but panel/file keys differ; note the editor in the profile.
+Ask once, plainly: *"Want Vim shortcuts included with each ticket, so you learn
+Vim as you go?"* Default is **off**. If yes, each LEAD card ends with a
+comprehensive per-ticket keyboard walkthrough (`references/vim.md`, which is also
+a full standalone Vim guide). Record `Vim practice: on` or `off` in the profile;
+the developer can toggle it anytime ("turn vim on/off").
+
+The guide is editor-agnostic: core Vim keys work in Vim, Neovim and any Vim
+emulation (Zed, VS Code, JetBrains IdeaVim, ...). If practice is on, also ask
+which editor they use and whether it has custom bindings for the file tree,
+finder, terminal, build and tests; record them on the profile's **Editor** line.
+Those recorded keys are what the per-ticket walkthrough uses for everything
+outside the text itself.
 
 ## 6. Write the profile
 
