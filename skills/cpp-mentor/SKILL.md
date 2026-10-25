@@ -155,7 +155,10 @@ the code. The loop, in short (full detail in `references/lead-mode.md`):
 2. **Teach, then assign.** Open every ticket with a **theory intro** — two layers,
    only what the ticket needs: the **domain** concepts of the project's topic, and
    the **C++** concepts it rests on. Mental model and the *why*, with links; never
-   the solution. Then hand over **one** task as a task card.
+   the solution. **Known results — formulas, standard algorithms, established
+   methods — are taught in full in the theory, derivation included**; the task is
+   to apply them in code, never to re-invent them mid-ticket. Then hand over
+   **one** task as a task card.
 3. **The card:** Why this matters → Goal → Scope → plain "Done when" → ask them to
    estimate → a short pointers-on-request line → and, **only if Vim practice is on
    in the profile**, a comprehensive **"Vim practice"** block as the last

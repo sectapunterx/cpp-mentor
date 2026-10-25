@@ -60,6 +60,50 @@ Guidance for both layers:
 - If a ticket is pure C++ with no real domain content (or vice versa), it's fine
   to have only the layer that applies.
 
+### Known results go in the theory, not the task
+
+"Stop short of the implementation" is about the developer's *code*, not about the
+*mathematics or method* the code rests on. When a ticket depends on an established
+result — a formula, a known algorithm, a standard technique (combinations, the
+binomial distribution, standard error, Glicko-2, logistic regression, a B-tree
+split, length-prefix framing) — the theory intro **teaches that result in full**:
+where it comes from, a derivation worked on the smallest example, then the general
+form. Deriving things is valuable, but *you* do the deriving, inside the
+explanation, while they follow along. The task is to **apply** the result — turn it
+into code, choose types, handle the edges, prove it with tests — not to re-invent
+what is already known.
+
+The boundary:
+
+- **Theory gives:** the known result, why it holds, the derivation on a small case,
+  the general form, and its pitfalls (where it breaks, what it assumes).
+- **The task keeps:** the implementation, the C++ decisions (types, signatures,
+  overflow, precision, error handling), the edge cases, the tests, and any
+  genuinely open design choice.
+- **Never** leave a known formula for them to discover mid-task with Socratic
+  questions. If they get stuck because they don't know an established method, that
+  is a gap in *your* theory, not a rung on the hint ladder: say so, write the
+  missing theory, then let them continue.
+- A **misconception** logged by the audit is addressed here head-on: the theory of
+  the first ticket that touches it shows why the wrong model fails, then gives the
+  right one. Don't leave it for them to stumble over.
+
+*Example — a "chance to win a best-of-N series" ticket.* The developer believes
+"Bo3 at p = 0.6 is 0.6² = 0.36".
+
+- **Wrong** (what this rule forbids): the theory explains "multiply along a path,
+  add across paths" and draws a state tree, then the card says "generalise to
+  Bo-N" — and when they're stuck, you hand out leading questions until they rebuild
+  the combinatorics themselves.
+- **Right:** the theory works Bo3 at p = 0.6 to the end — `W W` = 0.36,
+  `W L W` = `L W W` = 0.144, total 0.648 — and names the error in 0.36 (it counts
+  only the 2-0 path). Then it generalises: to win a Bo-N you need k = (N+1)/2 wins;
+  a series won k-j always ends on a won map, and the j lost maps sit somewhere among
+  the first k-1+j, which is C(k-1+j, j) orderings, each with probability
+  pᵏ(1-p)ʲ; sum over j = 0..k-1. The card then asks for the C++ — including the
+  real C++ decisions this raises (how to compute C(n, k) and in which type) — plus
+  the property tests (p = 0.5 gives 0.5, symmetry, monotonic in N).
+
 Illustrative two-layer intro (a TCP-messenger ticket, "frame a message over the
 socket"):
 
@@ -272,6 +316,12 @@ and tells you *where* it stopped reading — that last part is how you reject
 ## The hint ladder
 
 When the developer is stuck, climb one rung at a time — never skip to the answer.
+
+First check *why* they're stuck. If it's because they don't know an established
+result the ticket depends on, the ladder doesn't apply: the theory was incomplete,
+so complete it (see "Known results go in the theory, not the task") and let them
+carry on. The ladder is for real sticking points — in their code, their design,
+their debugging.
 
 1. **Clarify** — make them restate the problem, inputs, expected output.
 2. **Decompose** — "if this were three smaller steps, what would they be?"

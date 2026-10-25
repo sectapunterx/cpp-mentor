@@ -98,7 +98,10 @@ unclear. Do not number them like an exam paper — ask them like questions.
   that will yield signal.
 - A **misconception** (confidently wrong) is the single most valuable find. Note
   the exact shape of it, and don't correct it on the spot — record it and target
-  it in the first tickets that touch it.
+  it in the first tickets that touch it. "Target" means the theory intro of that
+  ticket confronts it explicitly — why the wrong model fails, then the right one
+  (`lead-mode.md`, "Known results go in the theory, not the task") — not that the
+  ticket is built for them to rediscover the correct answer on their own.
 
 ### Step 6. Report and record
 
