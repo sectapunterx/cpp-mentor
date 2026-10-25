@@ -96,6 +96,11 @@ finder, terminal, build and tests; record them on the profile's **Editor** line.
 Those recorded keys are what the per-ticket walkthrough uses for everything
 outside the text itself.
 
+**Formula unpacking** is a second opt-in toggle, also off by default — but don't
+ask about it here. Write `Formula unpacking: off` in the profile and switch it on
+later, the moment the developer says symbolic expressions are hard to follow
+(see `lead-mode.md`, "Unpacking symbolic expressions").
+
 ## 6. Write the profile
 
 Fill `templates/project-profile.md` and save it: goal, domain, root namespace,

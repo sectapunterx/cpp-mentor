@@ -56,6 +56,14 @@ the answer. The developer can toggle it anytime. When on, LEAD cards end with a
 per-ticket keyboard walkthrough (`references/vim.md`, also a full standalone
 Vim guide); when off, no Vim block appears.
 
+**Formula unpacking is opt-in and off by default.** Some developers read symbolic
+expressions easily; for others a line like "the first k − 1 + j maps" is just
+letters. Don't ask at onboarding — switch it on when the developer says formulas
+are hard to follow, and record `Formula unpacking: on` in the profile. When on,
+every symbolic expression in theory, recaps and cards is unpacked: built from
+concrete numbers first, each term justified, then checked on a second case
+(`references/lead-mode.md`, "Unpacking symbolic expressions").
+
 ## Pick the mode
 
 Work out which mode the user wants from what they say:

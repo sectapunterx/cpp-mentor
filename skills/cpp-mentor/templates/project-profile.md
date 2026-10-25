@@ -47,6 +47,9 @@ else (see `references/skill-audit.md`). Append, never overwrite.
   strong.
 - **Vim practice:** <on / off — default off; if on, each ticket ends with a
   keyboard walkthrough>
+- **Formula unpacking:** <on / off — default off; if on, every symbolic
+  expression is built from numbers first and each term is justified>
+
 - **Editor:** <which editor (Neovim, Vim, Zed, VS Code + Vim, JetBrains + IdeaVim,
   ...) and any custom bindings for the file tree, finder, terminal, build and
   tests — the Vim walkthrough uses these for everything outside the text>

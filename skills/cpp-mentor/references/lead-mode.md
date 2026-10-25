@@ -95,6 +95,38 @@ Guidance for both layers:
 - If a ticket is pure C++ with no real domain content (or vice versa), it's fine
   to have only the layer that applies.
 
+### Unpacking symbolic expressions (opt-in)
+
+Only when the profile records `Formula unpacking: on`. With it off, write formulas
+the usual way.
+
+When on, no symbolic expression appears bare — not in theory, not in a recap, not
+in a card. Each one is unpacked in three moves:
+
+1. **Numbers first.** Build the expression on a concrete case before any letter
+   appears: count the actual maps, bytes or rows in one small example.
+2. **Justify every term.** Then write the general form and explain each piece on
+   its own line — why it's there and what it counts. "k − 1 + j" is three claims
+   (*k − 1* wins, *plus j* losses, *before* the last map), and each gets a reason.
+3. **Check on a second case.** Plug in a different small example and show the
+   expression gives the right count there too, so the developer sees the letters
+   track the numbers.
+
+A small table (case → each term → result) often does moves 1 and 3 at once.
+Symbols are named in words the first time in every message ("k — how many map
+wins the series needs"), even if they were defined earlier.
+
+*Example — "the j losses sit somewhere among the first k − 1 + j maps".*
+
+- **Bare** (what this rule forbids): the sentence above, as written.
+- **Unpacked:** "Take Bo5, won 3-1. The team needs k = 3 wins and lost j = 1 map.
+  The last map is a win — that's what ended the series — so set it aside. Before
+  it the team won the other k − 1 = 2 wins it needed, *and* lost its j = 1 map:
+  2 + 1 = 3 maps. So `k − 1` counts the wins before the last map, `+ j` adds the
+  losses, and the total is how many maps come before the last one. Check on Bo3
+  won 2-1: k − 1 + j = 1 + 1 = 2 maps before the last — `W L W` and `L W W` both
+  have exactly two maps before the final W."
+
 ### Known results go in the theory, not the task
 
 "Stop short of the implementation" is about the developer's *code*, not about the
