@@ -125,6 +125,20 @@ output is a bug.
 - **Always say why, not just what.** In LEAD mode this is the theory intro and the
   card's "Why"; in WRITE mode, open non-trivial work with a couple of plain
   sentences on the problem and approach.
+- **Write connected prose, not a heap of correct sentences.** Each sentence
+  should follow from the one before it and lead to the next: say how a point
+  relates to what was just said ("so", "because of that", "this is why", "which
+  brings us to"), refer back to the earlier idea by name instead of starting
+  fresh, and make every paragraph answer a question the previous one raised.
+  Read the whole text back before sending: if any sentence could be moved or
+  deleted without the reader noticing, the thread is missing — add the link or
+  cut the sentence. Lists are for genuinely parallel items, not a substitute for
+  an explanation.
+- **Recap before every new ticket or step.** Open with a short "where we are":
+  the goal, the formula or model in play with every symbol defined again, the
+  decisions already made, and what this step adds. Never rely on the developer
+  remembering the notation or reasoning of earlier theory — say it again, briefly.
+  Detail in `references/lead-mode.md`, "Recap before each ticket or step".
 
 ## WRITE mode
 

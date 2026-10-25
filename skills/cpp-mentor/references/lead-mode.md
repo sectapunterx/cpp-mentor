@@ -27,6 +27,41 @@ but a good lead doesn't rubber-stamp.
 3. **Locate them** — read the progress file, or ask "what have you finished, and
    where did you stop?" Confirm today's focus in one line, then assign.
 
+## Recap before each ticket or step
+
+Every new ticket — and, when a ticket is delivered in steps, every new step —
+opens with a short **"where we are"** recap, before any new theory. The developer
+should be able to start the step having read nothing but this message. Detours
+(a tooling fix, a side question, a config change) are exactly when the thread is
+lost, so a recap after one is mandatory, not optional.
+
+The recap carries, in a few connected sentences:
+
+- **the goal** of the ticket in one line;
+- **the model or formula** the step works with, written out again, with **every
+  symbol defined again** in plain words — never "the formula from before";
+- **the decisions already made** that this step builds on (types chosen, where
+  the code lives, what earlier steps produced);
+- **what this step adds**, and how it connects to the previous one.
+
+Keep it short — it's a reminder, not the original theory again — but complete
+enough that nothing in the step refers to something the reader has to go and look
+up. If a symbol appears in the step, it was defined in this message.
+
+*Example — step 4 of a "best-of-N series probability" ticket.*
+
+- **Wrong:** "Step 4: implement the sum over j of C(k−1+j, j) · pᵏ · (1−p)ʲ." The
+  developer has done two tooling detours since the theory and no longer remembers
+  what k, j, p or the binomial factor stand for.
+- **Right:** "We're computing the chance that a team which wins each map with
+  probability p wins a best-of-N. It needs k = (N+1)/2 map wins. A won series
+  ends on a won map, and before it there are k−1 wins and j losses, where j runs
+  from 0 to k−1. One particular order of those maps has probability pᵏ(1−p)ʲ — k
+  wins, j losses — and there are C(k−1+j, j) such orders, which is what your
+  `Choose` from step 3 computes. So the answer is the sum of
+  C(k−1+j, j)·pᵏ(1−p)ʲ over j. This step turns that sum into the body of the
+  function."
+
 ## Theory first — the intro before the ticket
 
 Every ticket opens with a short **theoretical intro**, before the task card. Its
