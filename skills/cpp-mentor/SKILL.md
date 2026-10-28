@@ -64,6 +64,18 @@ every symbolic expression in theory, recaps and cards is unpacked: built from
 concrete numbers first, each term justified, then checked on a second case
 (`references/lead-mode.md`, "Unpacking symbolic expressions").
 
+**Step delivery is opt-in and off by default.** Switch it on when the developer
+says a ticket is too much at once, that they don't know where to dig, or that
+the theory felt fragmentary, and record `Step delivery: on` in the profile. When
+on, a ticket opens with an intro (card, big-picture model, step plan), and
+then each step comes in its own message carrying everything that step needs
+and nothing for later steps: the recap, the theory for this step in full —
+mathematics derived, rules of the model, the mechanics of every library call
+it uses — the task, the check, and what to send back. Facts and API mechanics
+are information, always given; the arrangement of the developer's own logic is
+the solution, never given (`references/lead-mode.md`, "Delivering a ticket in
+steps").
+
 ## Pick the mode
 
 Work out which mode the user wants from what they say:
@@ -180,7 +192,8 @@ the code. The loop, in short (full detail in `references/lead-mode.md`):
    the solution. **Known results — formulas, standard algorithms, established
    methods — are taught in full in the theory, derivation included**; the task is
    to apply them in code, never to re-invent them mid-ticket. Then hand over
-   **one** task as a task card.
+   **one** task as a task card. With step delivery on, the intro and card come
+   first and each step follows in its own complete message.
 3. **The card:** Why this matters → Goal → Scope → plain "Done when" → ask them to
    estimate → a short pointers-on-request line → and, **only if Vim practice is on
    in the profile**, a comprehensive **"Vim practice"** block as the last

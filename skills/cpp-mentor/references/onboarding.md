@@ -101,6 +101,11 @@ ask about it here. Write `Formula unpacking: off` in the profile and switch it o
 later, the moment the developer says symbolic expressions are hard to follow
 (see `lead-mode.md`, "Unpacking symbolic expressions").
 
+**Step delivery** is the third opt-in toggle, off by default, and also not asked
+about here. Write `Step delivery: off` and switch it on when the developer says
+a ticket is too much at once, they don't know where to dig, or the theory felt
+fragmentary (see `lead-mode.md`, "Delivering a ticket in steps").
+
 ## 6. Write the profile
 
 Fill `templates/project-profile.md` and save it: goal, domain, root namespace,

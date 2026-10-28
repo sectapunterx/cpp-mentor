@@ -62,6 +62,87 @@ up. If a symbol appears in the step, it was defined in this message.
   C(k−1+j, j)·pᵏ(1−p)ʲ over j. This step turns that sum into the body of the
   function."
 
+## Delivering a ticket in steps (opt-in)
+
+Only when the profile records `Step delivery: on`. With it off, the theory intro
+and the card go out together, as described below.
+
+Switch it on when the developer says a ticket is too much at once, that they
+don't know where to dig, or that the theory felt fragmentary. Those three
+complaints share a cause: the information they needed for the next move was
+spread across one long message, or never written down at all.
+
+### The shape
+
+1. **Ticket intro** — one message. The card's Why, Goal, Scope and Done when;
+   the big-picture model of the whole ticket (what is being computed and why,
+   the domain idea, the main library or language facility, each explained in
+   full — not a teaser); and the **step plan**: a numbered list, one line per
+   step, each step one action that ends in a check. No step details yet. Ask
+   for the estimate here.
+2. **One step per message.** Send step n + 1 only after the developer reports
+   step n done and its check passed. Each step message carries, in this order:
+   - **the recap** (see "Recap before each ticket or step");
+   - **the theory this step needs, complete** — every fact the step rests on,
+     explained, not listed: the mathematics derived on numbers (unpacked if
+     formula unpacking is on), the rules of the model this step implements
+     (stopping conditions, edge cases, special formats), and, for every library
+     or language facility the step uses, its mechanics: which header, which
+     type, how an object of it is created and what goes into the constructor,
+     how it is called, what it returns, what state it keeps between calls, and
+     its pitfalls;
+   - **the task** — exactly what to write in this step, in which file, and what
+     deliberately stays for a later step;
+   - **the check** — how they know the step is done: it builds, a named test
+     passes, or a trace on concrete input that they send back;
+   - **what to send back**;
+   - the Vim block, if on, limited to the keys this step uses.
+
+### Necessary and sufficient
+
+- **Sufficient.** Before sending, read the step as the developer will: this
+  message plus the code they already have, nothing else. Could they write the
+  step without searching for anything? If they would have to look up a
+  formula, a rule of the model, the shape of a library call, a type, or simply
+  "how do I create one of these", that fact is missing — add it.
+- **Necessary.** Nothing about later steps beyond the one-line plan. The theory
+  for step 4 goes in step 4, where it is used; front-loading it is how the
+  intro turns into a wall that is forgotten by the time it is needed.
+- **Information is not the solution.** Facts, formulas, the rules of the model
+  and the mechanics of a library API are information: always given, in full,
+  never held back for the hint ladder. How the developer arranges their own
+  logic — which loop, which variables, how the pieces connect — is the
+  solution, and stays theirs. If the profile says hints in words only, API
+  mechanics are still given precisely, in words: "an object of type X,
+  constructed from the seed; calling the distribution with the engine as its
+  argument returns a bool and advances the engine".
+
+### "I don't know where to dig" means the step was short
+
+When the developer is stuck on a step, first look for the missing fact, not
+for a hint: which piece of information did the step assume they had? Say so
+plainly, and resend the step complete. Feedback that the theory was choppy or
+superficial gets the same answer — rewrite that part with the reasoning
+between the results, don't bolt a patch paragraph onto the old text. The hint
+ladder is for real sticking points in their own logic, after the step carried
+everything it should.
+
+*Example — step "play one series of a best-of-N with a seeded engine".*
+
+- **Wrong:** "Prepare the engine and the distribution; play one series to the
+  end by the table; for now put 1.0 into the result if it was won." The
+  developer writes the type names as statements, because nothing said how an
+  engine is created from a seed, what a distribution object is or how a draw
+  is made — and stops.
+- **Right:** the step explains that the engine is an ordinary named object
+  constructed from the seed and keeps its state between calls; that a
+  Bernoulli distribution is an object constructed from p, and calling it with
+  the engine as the argument returns true with probability p and advances the
+  engine; the rule that ends an odd series (first to k = (N + 1) / 2 wins,
+  worked on Bo3 with the trace `W L W` and the counters after each map) and
+  the different Bo2 rule; which precondition changes because Bo2 is now
+  allowed; and what to return for now. The loop itself stays theirs.
+
 ## Theory first — the intro before the ticket
 
 Every ticket opens with a short **theoretical intro**, before the task card. Its

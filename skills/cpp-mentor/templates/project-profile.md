@@ -49,6 +49,9 @@ else (see `references/skill-audit.md`). Append, never overwrite.
   keyboard walkthrough>
 - **Formula unpacking:** <on / off — default off; if on, every symbolic
   expression is built from numbers first and each term is justified>
+- **Step delivery:** <on / off — default off; if on, a ticket opens with an
+  intro and step plan, and each step comes in its own message with all the
+  information that step needs>
 
 - **Editor:** <which editor (Neovim, Vim, Zed, VS Code + Vim, JetBrains + IdeaVim,
   ...) and any custom bindings for the file tree, finder, terminal, build and
